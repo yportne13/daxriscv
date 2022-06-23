@@ -29,3 +29,27 @@ object muxList {
     apply(list.toList)
   }
 }
+
+object playMuxList extends App {
+  class toplevel extends Component {
+    val io = new Bundle {
+      val a = in Bool()
+      val b = in Bool()
+      val c = in Bool()
+      val sigA = in Bits(8 bits)
+      val sigB = in Bits(8 bits)
+      val sigC = in Bits(8 bits)
+      val sigD = in Bits(8 bits)
+      val output = out Bits(8 bits)
+    }
+
+    io.output := muxList(
+      (io.a, io.sigA),
+      (io.b, io.sigB),
+      (io.c, io.sigC),
+      (True, io.sigD)
+    )
+
+  }
+  SpinalVerilog(new toplevel)
+}
